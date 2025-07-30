@@ -26,7 +26,7 @@ COPY . .
 
 RUN composer install --no-interaction --no-dev --optimize-autoloader
 
-RUN chmod -R 777 /var/www/html
+RUN chmod -R 777 /var/www/html/storage
 
 RUN php artisan key:generate
 
