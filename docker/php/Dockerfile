@@ -6,16 +6,14 @@ RUN apt-get update && apt-get install -y \
     pkg-config \
     libcurl4-openssl-dev \
     unzip \
-    git \
     zip \
+    git \
+    libonig-dev \
+    libxml2-dev \
+    && pecl install mongodb \
+    && docker-php-ext-enable mongodb \
+    && docker-php-ext-install pdo mbstring xml \
     && rm -rf /var/lib/apt/lists/*
-
-# Cài pecl mongodb extension
-RUN pecl install mongodb \
-    && docker-php-ext-enable mongodb
-
-# Cài các PHP extension thường dùng (thay đổi tuỳ dự án)
-RUN docker-php-ext-install pdo mbstring xml
 
 # Cài composer (copy từ official composer image)
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -31,5 +29,3 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader
 
 CMD ["php-fpm"]
-
-EXPOSE 8080
