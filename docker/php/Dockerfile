@@ -16,16 +16,18 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Cài composer (copy từ official composer image)
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-COPY php.ini /usr/local/etc/php/
+COPY docker/php/php.ini /usr/local/etc/php/
 
 WORKDIR /var/www/html
 
-# Copy code (tuỳ bạn, nếu dùng volume thì bỏ bước này)
 COPY . .
 
-# Cài dependencies composer
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-interaction --no-dev --optimize-autoloader
+
+RUN chmod -R 777 /var/www/html
+
+RUN php artisan key:generate
 
 CMD ["php-fpm"]
