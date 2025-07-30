@@ -5,8 +5,6 @@ services:
     build: ./docker/php
     volumes:
       - ./:/var/www/html
-    depends_on:
-      - mongo
   
   web:
     image: nginx:latest
