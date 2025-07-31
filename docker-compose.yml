@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
+    volumes:
+      - ./.env:/var/www/html/.env
   
   web:
     image: nginx:latest
