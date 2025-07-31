@@ -30,8 +30,6 @@ RUN chmod -R 777 /var/www/html/storage
 
 RUN php artisan key:generate
 
-CMD ["php-fpm"]
-
 RUN apt-get update && apt-get install -y supervisor
 
 RUN mkdir -p /var/log/supervisor
