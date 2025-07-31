@@ -7,7 +7,14 @@ services:
       dockerfile: docker/php/Dockerfile
     volumes:
       - ./:/var/www/html
-      - vendor:/var/www/html/vendor
+    environment:
+      - COMPOSER_ALLOW_SUPERUSER=1
+    command: >
+      bash -c "
+      chown -R www-data:www-data storage bootstrap/cache &&
+      php artisan config:clear &&
+      php artisan route:clear &&
+      php artisan key:generate"
   
   web:
     image: nginx:latest

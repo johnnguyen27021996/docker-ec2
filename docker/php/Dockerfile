@@ -29,9 +29,6 @@ RUN composer install --no-interaction --no-dev --optimize-autoloader
 RUN chown -R www-data:www-data storage bootstrap/cache
 RUN chmod -R 775 storage bootstrap/cache
 
-
-RUN php artisan key:generate
-
 RUN apt-get update && apt-get install -y supervisor
 
 RUN mkdir -p /var/log/supervisor
