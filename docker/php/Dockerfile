@@ -26,15 +26,16 @@ COPY . .
 
 RUN composer install --no-interaction --no-dev --optimize-autoloader
 
-RUN chown -R 777 /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 RUN php artisan key:generate
 
 RUN apt-get update && apt-get install -y supervisor
 
 RUN mkdir -p /var/log/supervisor
-
-RUN chmod -R 777 /var/log/supervisor
+RUN chown -R www-data:www-data /var/log/supervisor
+RUN chmod -R 775 /var/log/supervisor
 
 COPY docker/php/supervisord.conf /etc/supervisor/supervisord.conf
 
