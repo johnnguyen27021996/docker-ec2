@@ -16,7 +16,7 @@ services:
       php artisan config:clear &&
       php artisan route:clear &&
       php artisan key:generate &&
-      php-fpm"
+      /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf"
   
   web:
     image: nginx:latest
