@@ -34,7 +34,7 @@ CMD ["php-fpm"]
 
 RUN apt-get update && apt-get install -y supervisor
 
-COPY docker/php/supervisord.conf /etc/supervisor/supervisord.conf
+COPY docker/php/supervisord.conf /etc/supervisor/cond.f/supervisord.conf
 
 RUN mkdir -p /var/log/supervisor
 
