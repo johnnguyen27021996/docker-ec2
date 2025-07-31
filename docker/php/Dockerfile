@@ -20,6 +20,18 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 COPY docker/php/php.ini /usr/local/etc/php/
 
+# Cài Supervisor
+RUN apt-get update && apt-get install -y supervisor
+
+# Tạo thư mục log
+RUN mkdir -p /var/log/supervisor
+RUN chown -R www-data:www-data /var/log/supervisor
+RUN chmod -R 775 /var/log/supervisor
+
+# Copy file cấu hình Supervisor
+COPY docker/php/supervisord.conf /etc/supervisor/supervisord.conf
+COPY docker/php/php-worker.conf /etc/supervisor/conf.d/php-worker.conf
+
 WORKDIR /var/www/html
 
 COPY . .
@@ -29,14 +41,5 @@ RUN composer install --no-interaction --no-dev --optimize-autoloader
 RUN chown -R www-data:www-data storage bootstrap/cache
 RUN chmod -R 775 storage bootstrap/cache
 
-RUN apt-get update && apt-get install -y supervisor
-
-RUN mkdir -p /var/log/supervisor
-RUN chown -R www-data:www-data /var/log/supervisor
-RUN chmod -R 775 /var/log/supervisor
-
-COPY docker/php/supervisord.conf /etc/supervisor/supervisord.conf
-
-COPY docker/php/php-worker.conf /etc/supervisor/conf.d/php-worker.conf
-
+# Chạy supervisord khi container start
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
