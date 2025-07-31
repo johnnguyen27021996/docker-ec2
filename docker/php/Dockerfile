@@ -34,10 +34,12 @@ CMD ["php-fpm"]
 
 RUN apt-get update && apt-get install -y supervisor
 
-COPY docker/php/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
 RUN mkdir -p /var/log/supervisor
 
 RUN chmod -R 777 /var/log/supervisor
 
-CMD ["/usr/bin/supervisord", "-n", "/etc/supervisor/conf.d/supervisord.conf"]
+COPY docker/php/supervisord.conf /etc/supervisor/supervisord.conf
+
+COPY docker/php/php-worker.conf /etc/supervisor/conf.d/php-worker.conf
+
+CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
