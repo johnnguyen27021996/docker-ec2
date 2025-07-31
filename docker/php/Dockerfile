@@ -40,4 +40,4 @@ RUN mkdir -p /var/log/supervisor
 
 RUN chmod -R 777 /var/log/supervisor
 
-CMD ["/usr/bin/supervisord", "-n", "/etc/supervisor/cond.d/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-n", "/etc/supervisor/cond.f/supervisord.conf"]
