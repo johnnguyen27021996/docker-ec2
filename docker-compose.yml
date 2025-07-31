@@ -15,7 +15,8 @@ services:
       chown -R www-data:www-data storage bootstrap/cache &&
       php artisan config:clear &&
       php artisan route:clear &&
-      php artisan key:generate"
+      php artisan key:generate &&
+      php-fpm"
   
   web:
     image: nginx:latest
