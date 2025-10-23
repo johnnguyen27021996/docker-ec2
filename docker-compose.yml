@@ -5,11 +5,15 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
+      args:
+        APP_ENV: ${APP_ENV}
+    ports:
+      - "8000:80"
     volumes:
       - ./:/var/www/html
       - vendor:/var/www/html/vendor
     environment:
-      - COMPOSER_ALLOW_SUPERUSER=1
+      - APP_ENV=${APP_ENV}
     command: >
       bash -c "
       chown -R www-data:www-data storage bootstrap/cache &&
@@ -17,16 +21,6 @@ services:
       php artisan route:clear &&
       php artisan key:generate &&
       /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf"
-  
-  web:
-    image: nginx:latest
-    ports:
-      - "80:80"
-    volumes:
-      - ./:/var/www/html
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-    depends_on:
-      - app
 
 volumes:
   vendor:
