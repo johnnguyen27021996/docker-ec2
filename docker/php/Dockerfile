@@ -43,7 +43,12 @@ WORKDIR /var/www/html
 
 COPY . .
 
+RUN if [ ! -f .env ]; then cp .env.example .env; fi
 RUN composer install --no-interaction --no-dev --optimize-autoloader
 
 RUN chown -R www-data:www-data storage bootstrap/cache
 RUN chmod -R 775 storage bootstrap/cache
+
+EXPOSE 80
+
+CMD ["bash", "-c", "chown -R www-data:www-data storage bootstrap/cache && php artisan config:clear && php artisan route:clear && php artisan key:generate && /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf"]
