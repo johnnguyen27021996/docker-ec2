@@ -89,7 +89,7 @@ return [
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
-                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
+                'connectionString' => 'tls://' . env('PAPERTRAIL_URL') . ':' . env('PAPERTRAIL_PORT'),
             ],
             'processors' => [PsrLogMessageProcessor::class],
         ],
@@ -127,6 +127,29 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'k_out' => [
+            'driver' => 'monolog',
+            'handler' => Monolog\Handler\FilterHandler::class,
+            'with' => [
+                'handler' => new StreamHandler('php://stdout'),
+                'minLevel' => Monolog\Logger::INFO,
+                'maxLevel' => Monolog\Logger::WARNING, // chỉ info + warning
+            ],
+        ],
+
+        'k_der' => [
+            'driver' => 'monolog',
+            'handler' => StreamHandler::class,
+            'with' => [
+                'stream' => 'php://stderr',
+            ],
+            'level' => 'error',
+        ],
+
+        'k_chanel' => [
+            'driver' => 'stack',
+            'channels' => ['k_out', 'k_der'],
+        ],
     ],
 
 ];
