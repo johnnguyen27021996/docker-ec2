@@ -35,7 +35,7 @@ COPY docker/php/php-worker.conf /etc/supervisor/conf.d/php-worker.conf
 # Cài nginx
 RUN apt-get update && apt-get install -y nginx
 
-ARG APP_ENV=local
+ARG APP_ENV=dev
 ENV APP_ENV=${APP_ENV}
 COPY docker/nginx/default.conf.${APP_ENV} /etc/nginx/conf.d/default.conf
 
