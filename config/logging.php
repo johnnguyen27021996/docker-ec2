@@ -128,13 +128,8 @@ return [
         ],
 
         'k_out' => [
-            'driver' => 'monolog',
-            'handler' => Monolog\Handler\FilterHandler::class,
-            'with' => [
-                'handler' => new StreamHandler('php://stdout'),
-                'minLevel' => Monolog\Logger::INFO,
-                'maxLevel' => Monolog\Logger::WARNING, // chỉ info + warning
-            ],
+            'driver' => 'custom',
+            'via' => App\Logging\KStdoutLogger::class,
         ],
 
         'k_der' => [
@@ -148,7 +143,8 @@ return [
 
         'k_chanel' => [
             'driver' => 'stack',
-            'channels' => ['k_out', 'k_der'],
+	    'channels' => ['k_out', 'k_der'],
+	    'tap' => [App\Logging\KJsonFormatterTap::class],
         ],
     ],
 
